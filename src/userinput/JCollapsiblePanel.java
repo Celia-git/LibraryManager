@@ -16,6 +16,7 @@ public class JCollapsiblePanel extends JPanel {
     super();
 
     this.collapsed = true;
+    setBackground(titleCol);
     JLabel titleLabel = new JLabel(title);
     titleLabel.setPreferredSize(new Dimension(600, 20));
     
@@ -24,6 +25,7 @@ public class JCollapsiblePanel extends JPanel {
     
     // subPanel will contain all details
     subPanel = new JPanel();
+    subPanel.setBackground(titleCol);
     subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.Y_AXIS));
     for (String cont: content){
         JLabel label = new JLabel(cont);

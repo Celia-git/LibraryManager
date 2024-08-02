@@ -105,6 +105,7 @@ public class User extends JPanel {
                         try {
                         String[] displayStrings = Search.view("book");
                         int i = 0;
+                        int c = 0;
                         String metadata="";
                         for (String str : displayStrings){
                             if (i%2==0){
@@ -112,8 +113,10 @@ public class User extends JPanel {
                             }
                             else{
                                 // Create a new collapsable panel and add it to viewOutputText
-                                JPanel panel = new JCollapsiblePanel(str, Color.BLUE, Search.viewVerbose("book", metadata), window);
+                                Color[] colors = {new Color(102, 255, 102), Color.LIGHT_GRAY};
+                                JPanel panel = new JCollapsiblePanel(str, colors[c%2], Search.viewVerbose("book", metadata), window);
                                 viewOutputPanel.add(panel);
+                                c +=1;
                             }  
                             i += 1;
                         }
