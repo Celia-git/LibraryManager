@@ -7,17 +7,19 @@ import datastorage.Book;
 import exceptions.InvalidAction;
 import exceptions.InvalidType;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import statics.Search;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import javax.swing.JPanel;
-import javax.swing.BorderFactory;
-import javax.swing.JTextField;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+import librarysystem.Window;
 
 /**
  *
@@ -28,66 +30,112 @@ public class User extends JPanel {
     /**
      * Default Constructor
      */
-    public User() {
-        setBorder(BorderFactory.createLineBorder(Color.black));
+    
+    private JTextField searchEntry;
+    private JButton searchButton;
+    private JButton viewButton;
+    private JPanel entryPanel;
+    private JPanel viewPanel;
+    private JScrollPane viewOutput;
+    private JPanel viewOutputPanel;
+    private JLabel resultsLabel;
+    private Window window;
+    
+    public User(Window window) {
+        this.window = window;
     }
-
-    private String function;
-    private String key;
-    private String value;
-
-    /**
-     * Draw User pane
-     */
     
-    
-        /*
-        try {
-            // Show the options for User
-
-            /*
-            System.out.println("Enter a command to 'display' or 'search': \n");
-            ("Command options are 'display', 'search', \nEnter desired command: ");
-            Scanner in = new Scanner(System.in);
-            function = in.next();
-            function = function.toLowerCase();
-
-            //search(category);   
-            switch (function) {
-                case "display":
-                    display();
-                    break;
-                case "search":
-                    search();
-                    break;
-                default:
-                    throw new InvalidAction(function, "Command does not exist");
+    public void configureUserMenu(){
+        this.setLayout(null);
+        
+        entryPanel = new JPanel();
+        entryPanel.setBounds(0, 30, 850, 50);
+        entryPanel.setBackground(Color.red);
+        searchEntry = new JTextField(30);
+        searchEntry.setAlignmentX(Component.CENTER_ALIGNMENT);
+        searchButton = new JButton("Go");
+        searchButton.setBounds(150, 0, 20, 20);
+        entryPanel.add(searchEntry); entryPanel.add(searchButton);
+        entryPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        entryPanel.setAlignmentY(Component.TOP_ALIGNMENT);
+        
+        viewPanel = new JPanel();   
+        viewPanel.setBounds(0, 150, 800, 600);
+        viewPanel.setBackground(Color.blue);
+        resultsLabel = new JLabel("", JLabel.CENTER);
+        resultsLabel.setSize(300, 20);
+        resultsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        viewButton = new JButton("View All");
+        viewButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        viewOutputPanel = new JPanel();
+        viewOutputPanel.setLayout(new BoxLayout(viewOutputPanel, BoxLayout.Y_AXIS));
+        viewOutput = new JScrollPane(viewOutputPanel);
+        viewOutput.setBounds(0, 0, 800, 500);
+        viewOutput.setBackground(Color.black);
+        
+        viewPanel.add(resultsLabel);
+        viewPanel.add(viewButton);
+        viewPanel.add(viewOutput);
+        
+        viewPanel.setLayout(new BoxLayout(viewPanel, BoxLayout.Y_AXIS));
+        viewPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        add(entryPanel); add(viewPanel);
+        
+        
+        // Add functionality to search button
+        searchButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){            
+                resultsLabel.setText(searchEntry.getText());
+                
             }
-        } catch (InvalidType | InvalidAction | FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
-            getInput();
-        }
-            */
-    
-    
-    /**
-     * Method for displaying all data relating to books. overwritten in admin
-     * class to allow display all of type book or student.
-     *
-     * @throws InvalidType
-     * @throws FileNotFoundException
-     */
-    public void display() throws InvalidType, FileNotFoundException, InvalidAction, IOException {
-        System.out.println("View all details?");
-        Scanner in = new Scanner(System.in);
-        String y = in.next();
-        if (y.equalsIgnoreCase("y") || y.equalsIgnoreCase("yes")) {
-            System.out.println(Search.viewVerbose("book"));
-        } else {
-            System.out.println(Search.view("book"));
-        }
+        });
+        
+        // Action Listener for User buttons
+        viewButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                
+                // Action: Button Click
+                if (e.getSource() instanceof JButton){
+                    JButton sourceButton = (JButton)e.getSource();
+                    
+                    // View All Clicked
+                    if (e.getSource().equals(viewButton)){
+                        viewOutputPanel.removeAll();
+                        try {
+                        String[] displayStrings = Search.view("book");
+                        int i = 0;
+                        String metadata="";
+                        for (String str : displayStrings){
+                            if (i%2==0){
+                                metadata = str;
+                            }
+                            else{
+                                // Create a new collapsable panel and add it to viewOutputText
+                                JPanel panel = new JCollapsiblePanel(str, Color.BLUE, Search.viewVerbose("book", metadata), window);
+                                viewOutputPanel.add(panel);
+                            }  
+                            i += 1;
+                        }
+                        
+                    } catch (InvalidAction ex) {
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    resultsLabel.setText("All Books");
+                    searchEntry.setText("");
+                    window.refresh();
+                    }
+                }
+                
+            }
+            
+        });
 
     }
+    
+   
 
     /**
      * User class can only search books and not student files
@@ -96,6 +144,7 @@ public class User extends JPanel {
      * @throws FileNotFoundException
      * @throws InvalidAction
      */
+    /*
     public void search() throws InvalidType, FileNotFoundException, InvalidAction, IOException {
         Book book = new Book("");
         String showKeys[] = book.getKeys();
@@ -114,5 +163,5 @@ public class User extends JPanel {
         });
 
     }
-
+*/
 }

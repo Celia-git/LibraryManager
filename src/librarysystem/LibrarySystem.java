@@ -3,49 +3,34 @@
  */
 package librarysystem;
 
-import exceptions.InvalidAction;
-import statics.Search;
-import userinput.*;
-import datastorage.*;
-import exceptions.*;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.BorderFactory;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-
 /**
  *
  * @author Celia
  */
-public class LibrarySystem {
+public class LibrarySystem{
 
+    
     /**
      *
      * @param args
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         
 
-        User u;
-        
         // Create and Show GUI
         SwingUtilities.invokeLater(new Runnable(){
             public void run(){
-                MainFrame();
+                new Window().configureWindow();
+                
             }
         });
     }
+
 }   
-        
+
+
+
         /*
 
 

@@ -4,10 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/cofho/Documents/NetBeansProjects/LibrarySystem/src/librarysystem/LibrarySystem.java</file>
-            <file>file:/C:/Users/cofho/Documents/NetBeansProjects/LibrarySystem/src/userinput/Admin.java</file>
+            <file>file:/C:/Users/cofho/Documents/NetBeansProjects/LibrarySystem/src/statics/Search.java</file>
             <file>file:/C:/Users/cofho/Documents/NetBeansProjects/LibrarySystem/src/userinput/User.java</file>
             <file>file:/C:/Users/cofho/Documents/NetBeansProjects/LibrarySystem/src/librarysystem/CreateTestFiles.java</file>
-            <file>file:/C:/Users/cofho/Documents/NetBeansProjects/LibrarySystem/src/librarysystem/MainFrame.java</file>
+            <file>file:/C:/Users/cofho/Documents/NetBeansProjects/LibrarySystem/src/datastorage/Book.java</file>
+            <file>file:/C:/Users/cofho/Documents/NetBeansProjects/LibrarySystem/src/datastorage/DataStorage.java</file>
         </group>
     </open-files>
 </project-private>

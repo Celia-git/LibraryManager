@@ -23,23 +23,26 @@ public final class Search {
     /**
      *
      * @param subtype
-     * @return String formattedData
+     * @return String array of formattedData
      * @throws FileNotFoundException
      */
-    public static String view(String subtype) throws FileNotFoundException, InvalidAction, IOException {
+    public static String[] view(String subtype) throws FileNotFoundException, InvalidAction, IOException {
 
         //Store an array of DataStorage Objects:
         DataStorage[] allObjects = Data.getAll(subtype);
-        String formattedData = "";
+        String[] formattedData = new String [allObjects.length*2];
 
         // Loop objects
+        int i = 0;
         for (DataStorage object : allObjects) {
             // Call object.getId(), object.getName()
             String id = object.getId();
             String name = object.getName();
             // Store these values in a formatted string
             String s = String.format(id + "     " + name + "\n");
-            formattedData += s;
+            formattedData[i] = id;
+            formattedData[i+1] =  s;
+            i += 2;
         }
 
         // Return Formatted String
@@ -50,23 +53,23 @@ public final class Search {
     /**
      *
      * @param subtype
-     * @return all data related to all objects of a given type
+     * @return String[] all data related to an object of a given type and name
      * @throws FileNotFoundException
      */
-    public static String viewVerbose(String subtype) throws FileNotFoundException, InvalidAction, IOException {
+    public static String[] viewVerbose(String subtype, String id) throws FileNotFoundException, InvalidAction, IOException {
 
-        // Store an array or DataStorage Objects:
-        DataStorage[] objects = Data.getAll(subtype);
-        String formattedString = "";
-
-        // Loop Objects, Call object.format()
-        for (DataStorage o : objects) {
-            String list = Arrays.toString(o.format());
-            formattedString += list + "\n";
+        // Get Object:
+        if (subtype=="book"){
+            Book book = getBook("id", id).get(0);
+            return book.format();
+            
+        } else if (subtype=="student"){
+            Student student = getStudent("id", id).get(0);
+            return student.format();
         }
 
         // Return formatted string
-        return formattedString;
+        return new String[0];
 
     }
 
