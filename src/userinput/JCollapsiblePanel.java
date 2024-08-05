@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+
 public class JCollapsiblePanel extends JPanel {
   private JLabel titleLabel;
   private boolean collapsed;
@@ -17,9 +18,8 @@ public class JCollapsiblePanel extends JPanel {
 
     this.collapsed = true;
     setBackground(titleCol);
-    JLabel titleLabel = new JLabel(title);
-    titleLabel.setPreferredSize(new Dimension(600, 20));
-    
+    JLabel titleLabel = new JLabel(String.format("                        %1$-62s", title));
+    titleLabel.setFont(window.getLabelTitleFont());
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     add(titleLabel);
     
@@ -28,13 +28,10 @@ public class JCollapsiblePanel extends JPanel {
     subPanel.setBackground(titleCol);
     subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.Y_AXIS));
     for (String cont: content){
-        JLabel label = new JLabel(cont);
+        JLabel label = new JLabel(String.format("                        %1$-62s", cont));
+        label.setFont(window.getLabelFont());
         subPanel.add(label);
     }
-    
-
-    // as Titleborder has no access to the Label we fake the size data ;)
-    final JLabel l = new JLabel(title);
     
     addMouseListener(new MouseAdapter() {
       @Override
@@ -42,12 +39,10 @@ public class JCollapsiblePanel extends JPanel {
         // Expand
         if (getCollapsed()==true) {
             add(subPanel);
-            setMinimumSize(new Dimension((int) titleLabel.getPreferredSize().getWidth(), 200));   
         }
         // Collapse
         else {
             remove(subPanel);
-            setMinimumSize(new Dimension(titleLabel.getPreferredSize()));
         }
         setCollapsed(!collapsed);
         window.refresh();

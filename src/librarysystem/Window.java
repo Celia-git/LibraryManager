@@ -5,6 +5,7 @@
  */
 package librarysystem;
 
+import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import userinput.*;
@@ -14,8 +15,14 @@ import userinput.*;
  * @author Celia
  */
 public class Window extends JFrame{
+    private Font titleFont = new Font("Helvetica", Font.PLAIN, 18);
+    private Font labelFont = new Font("Consolas", Font.PLAIN, 12);
+    private Font defaultFont = new Font("Helvetica", Font.PLAIN, 14);
+    private Font labelTitleFont = new Font("Consolas", Font.BOLD, 12);
+    
     public void Window(){
     }
+    
     public void configureWindow(){
         setTitle("Library System");
         refresh();
@@ -31,5 +38,17 @@ public class Window extends JFrame{
         pack();
         setSize(800, 900);
         setLocationRelativeTo(null);
+    }
+    public Font getTitleFont(){
+        return this.titleFont;
+    }
+    public Font getDefaultFont(){
+        return this.defaultFont;
+    }
+    public Font getLabelFont(){
+        return this.labelFont;
+    }
+    public Font getLabelTitleFont(){
+        return this.labelTitleFont;
     }
 }

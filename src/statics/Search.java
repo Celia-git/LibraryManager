@@ -181,9 +181,9 @@ public final class Search {
                         // If the key matches param key
                         String bookKey = bookKeys.nextElement();
                         if (key.equalsIgnoreCase(bookKey)) {
-                            // If the value matches param value
+                            // If the param value is found in the book value
                             String bookValue = bookData.get(bookKey);
-                            if (value.equalsIgnoreCase(bookValue)) {
+                            if (bookValue.toUpperCase().contains(value.toUpperCase())) {
                                 // This Book Matches! Add it to the return list
                                 books.add(book);
                             }
