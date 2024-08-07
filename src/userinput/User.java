@@ -39,7 +39,7 @@ public class User extends JPanel {
     private JTextField searchEntry;
     private JButton searchButton;
     private JButton viewButton;
-    private JComboBox searchKeys;
+    private JComboBox bookSearchKeys;
     private JPanel entryPanel;
     private JPanel viewPanel;
     private JScrollPane viewOutput;
@@ -48,8 +48,125 @@ public class User extends JPanel {
     private Window window;
     private Font defaultFont;
     private Font titleFont; 
+     
+
+    public User(Window window) {
+        this.window = window;
+        this.defaultFont = window.getDefaultFont();
+        this.titleFont = window.getTitleFont();
+    }
+    
+    public void configureUserMenu(){
+        this.setLayout(null);
+        
+        createEntryPanel();
+        createSearchEntry();
+        createSearchButton();
+        createBookSearchKeys();
+        
+       
+        entryPanel.add(searchEntry); entryPanel.add(bookSearchKeys); entryPanel.add(searchButton);
+        
+        
+        createViewPanel();
+        createResultsLabel();
+        createViewButton();
+        createViewOutputPanel();
+        
+        
+        viewPanel.add(resultsLabel); viewPanel.add(viewButton); viewPanel.add(viewOutput);
+        
+        createAdminLoginWidgets();
+
+        // Add Default user widgets
+        add(entryPanel); add(viewPanel); add(adminLoginPanel);
+        
+        // Add functionality to search button, view button, and admin login button
+        searchButton.addActionListener((ActionListener) new UserListener(this));
+        viewButton.addActionListener((ActionListener) new UserListener(this));
+        adminLoginButton.addActionListener((ActionListener) new UserListener(this));
+        
+        
+    }
+    
+    public void loadAdminMenu(){
+        window.addAdmin();
+    }
+    
+    /// Create Widgets
     
     
+    public void createEntryPanel(){
+        entryPanel = new JPanel();
+        entryPanel.setBounds(0, 30, 850, 50);
+        entryPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        entryPanel.setAlignmentY(Component.TOP_ALIGNMENT);
+        
+    }
+    
+    public void createSearchEntry(){
+        searchEntry = new JTextField(30);
+        searchEntry.setFont(this.defaultFont);
+        searchEntry.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+    
+    public void createBookSearchKeys(){
+        bookSearchKeys = new JComboBox<String>(new Book("").getKeys());
+
+    }
+    
+    public void createSearchButton(){
+        searchButton = new JButton("Go");
+        searchButton.setFont(this.defaultFont);
+        searchButton.setBounds(150, 0, 20, 20);
+    }
+    
+    public void createViewPanel(){
+        viewPanel = new JPanel();   
+        viewPanel.setBounds(100, 150, 600, 600);
+        viewPanel.setLayout(new BoxLayout(viewPanel, BoxLayout.Y_AXIS));
+        viewPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+    }
+    
+    public void createResultsLabel(){
+        resultsLabel = new JLabel("", JLabel.CENTER);
+        resultsLabel.setFont(this.titleFont);
+        resultsLabel.setSize(300, 50);
+        resultsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+    }
+    public void createViewButton(){        
+        viewButton = new JButton("View All");
+        viewButton.setFont(this.defaultFont);
+        viewButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+    }
+    
+    public void createViewOutputPanel(){
+        viewOutputPanel = new JPanel();
+        viewOutputPanel.setLayout(new BoxLayout(viewOutputPanel, BoxLayout.Y_AXIS));
+        viewOutput = new JScrollPane(viewOutputPanel);
+    }
+    public void createAdminLoginWidgets(){
+        adminLoginPanel = new JPanel();
+        adminLoginPanel.setBounds(100, 775, 600, 25);
+        adminLoginPanel.setLayout(new BoxLayout(adminLoginPanel, BoxLayout.X_AXIS));
+        adminLoginPanel.setAlignmentX(Component.CENTER_ALIGNMENT);        
+        adminLoginPanel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+        adminLoginLabel = new JLabel("Enter admin password: ");
+        adminLoginLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        adminLoginLabel.setFont(this.defaultFont);
+        adminLoginEntry = new JPasswordField(15);
+        adminLoginEntry.setEchoChar('*');
+        adminLoginButton = new JButton("Go");
+        adminLoginPanel.add(adminLoginLabel);
+        adminLoginPanel.add(adminLoginEntry);
+        adminLoginPanel.add(adminLoginButton);
+        
+    }
+    
+    // Getters and Setters
     public JTextField getSearchEntry() {
         return searchEntry;
     }
@@ -74,12 +191,12 @@ public class User extends JPanel {
         this.viewButton = viewButton;
     }
 
-    public JComboBox getSearchKeys() {
-        return searchKeys;
+    public JComboBox getBookSearchKeys() {
+        return bookSearchKeys;
     }
 
-    public void setSearchKeys(JComboBox searchKeys) {
-        this.searchKeys = searchKeys;
+    public void setBookSearchKeys(JComboBox bookSearchKeys) {
+        this.bookSearchKeys = bookSearchKeys;
     }
 
     public JPanel getEntryPanel() {
@@ -145,77 +262,36 @@ public class User extends JPanel {
     public void setTitleFont(Font titleFont) {
         this.titleFont = titleFont;
     }
-    public User(Window window) {
-        this.window = window;
-    }
     
-    public void configureUserMenu(){
-        this.setLayout(null);
-        
-        defaultFont = window.getDefaultFont();
-        titleFont = window.getTitleFont();
-        
-        entryPanel = new JPanel();
-        entryPanel.setBounds(0, 30, 850, 50);
-        searchEntry = new JTextField(30);
-        searchEntry.setFont(defaultFont);
-        searchEntry.setAlignmentX(Component.CENTER_ALIGNMENT);
-        searchKeys = new JComboBox<String>(new Book("").getKeys());
-        searchButton = new JButton("Go");
-        searchButton.setFont(defaultFont);
-        searchButton.setBounds(150, 0, 20, 20);
-        entryPanel.add(searchEntry); entryPanel.add(searchKeys); entryPanel.add(searchButton);
-        entryPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        entryPanel.setAlignmentY(Component.TOP_ALIGNMENT);
-        
-        viewPanel = new JPanel();   
-        viewPanel.setBounds(100, 150, 600, 600);
-        resultsLabel = new JLabel("", JLabel.CENTER);
-        resultsLabel.setFont(titleFont);
-        resultsLabel.setSize(300, 50);
-        resultsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewButton = new JButton("View All");
-        viewButton.setFont(defaultFont);
-        viewButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewOutputPanel = new JPanel();
-        viewOutputPanel.setLayout(new BoxLayout(viewOutputPanel, BoxLayout.Y_AXIS));
-        viewOutput = new JScrollPane(viewOutputPanel);
-        
-        viewPanel.add(resultsLabel);
-        viewPanel.add(viewButton);
-        viewPanel.add(viewOutput);
-        viewPanel.setLayout(new BoxLayout(viewPanel, BoxLayout.Y_AXIS));
-        viewPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
-        adminLoginPanel = new JPanel();
-        adminLoginPanel.setBounds(100, 775, 600, 25);
-        adminLoginPanel.setLayout(new BoxLayout(adminLoginPanel, BoxLayout.X_AXIS));
-        adminLoginPanel.setAlignmentX(Component.CENTER_ALIGNMENT);        
-        adminLoginPanel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-        
-        adminLoginLabel = new JLabel("Enter admin password: ");
-        adminLoginLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        adminLoginLabel.setFont(defaultFont);
-        adminLoginEntry = new JPasswordField("admin", 15);
-        adminLoginEntry.setEchoChar('*');
-        adminLoginButton = new JButton("Go");
-        adminLoginPanel.add(adminLoginLabel);
-        adminLoginPanel.add(adminLoginEntry);
-        adminLoginPanel.add(adminLoginButton);
-        
-        
-
-        add(entryPanel); add(viewPanel); add(adminLoginPanel);
-        
-        // Add functionality to search button
-        searchButton.addActionListener((ActionListener) new UserListener(this));
-        
-        
-        // Action Listener for View button
-        viewButton.addActionListener((ActionListener) new UserListener(this));
-
-        
+    public JPanel getAdminLoginPanel() {
+        return adminLoginPanel;
     }
-    
 
+    public void setAdminLoginPanel(JPanel adminLoginPanel) {
+        this.adminLoginPanel = adminLoginPanel;
+    }
+
+    public JLabel getAdminLoginLabel() {
+        return adminLoginLabel;
+    }
+
+    public void setAdminLoginLabel(JLabel adminLoginLabel) {
+        this.adminLoginLabel = adminLoginLabel;
+    }
+
+    public JPasswordField getAdminLoginEntry() {
+        return adminLoginEntry;
+    }
+
+    public void setAdminLoginEntry(JPasswordField adminLoginEntry) {
+        this.adminLoginEntry = adminLoginEntry;
+    }
+
+    public JButton getAdminLoginButton() {
+        return adminLoginButton;
+    }
+
+    public void setAdminLoginButton(JButton adminLoginButton) {
+        this.adminLoginButton = adminLoginButton;
+    }
 }

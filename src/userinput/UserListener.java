@@ -20,7 +20,7 @@ import statics.Search;
 
 /**
  *
- * @author cofho
+ * @author Celia
  */
 public class UserListener implements ActionListener {
     
@@ -39,7 +39,7 @@ public class UserListener implements ActionListener {
             u.getViewOutputPanel().removeAll();
 
             // View All Clicked
-            if (e.getSource().equals(u.getViewButton())){
+            if (sourceButton.equals(u.getViewButton())){
 
                 try {
                     String[] displayStrings = Search.view("book");
@@ -70,8 +70,8 @@ public class UserListener implements ActionListener {
             }
 
             // Search "GO" clicked
-            else if (e.getSource().equals(u.getSearchButton())){
-                String searchKey = (String) u.getSearchKeys().getSelectedItem();
+            else if (sourceButton.equals(u.getSearchButton())){
+                String searchKey = (String) u.getBookSearchKeys().getSelectedItem();
                 String searchValue = (String) u.getSearchEntry().getText();
 
                 try {
@@ -96,6 +96,26 @@ public class UserListener implements ActionListener {
                 }
 
             }
+            
+            // Admin Login Button clicked
+            else if (sourceButton.equals(u.getAdminLoginButton())){
+                PasswordVerification.readPassword();
+                String enteredPass = String.valueOf(u.getAdminLoginEntry().getPassword());
+                
+                // Valid Password: Open Admin Menu
+                if (PasswordVerification.isPasswordValid(enteredPass)){
+                    u.getAdminLoginEntry().setBackground(Color.WHITE);
+                    u.getAdminLoginEntry().setForeground(Color.BLACK);
+                    u.loadAdminMenu();
+                } 
+                
+                // Invalid Password
+                else{
+                    u.getAdminLoginEntry().setBackground(Color.RED);
+                    u.getAdminLoginEntry().setForeground(Color.WHITE);
+                }
+            }
+            
             u.getWindow().refresh();
         }
 

@@ -8,6 +8,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
+/**
+ *
+ * @author Celia
+ */
 public class JCollapsiblePanel extends JPanel {
   private JLabel titleLabel;
   private boolean collapsed;

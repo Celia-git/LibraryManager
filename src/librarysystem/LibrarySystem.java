@@ -21,7 +21,8 @@ public class LibrarySystem{
         // Create and Show GUI
         SwingUtilities.invokeLater(new Runnable(){
             public void run(){
-                new Window().configureWindow();
+                Window window = new Window();
+                window.configureWindow();
                 
             }
         });

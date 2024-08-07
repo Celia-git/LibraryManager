@@ -8,6 +8,7 @@ package userinput;
 import datastorage.*;
 import exceptions.*;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 import statics.*;
 import userinput.User;
 import java.io.FileNotFoundException;
@@ -19,40 +20,114 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import librarysystem.Window;
 
 /**
  *
  * @author Celia
  */
-public class Admin{
+public class Admin extends User{
 
     // Admin Entry Strings
-    private String password = "admin";
-    private String function;
-    private String key;
-    private String value;
-    private String category;
-    private final String[] funcOptions = {"display", "search", "add", "delete", "modify", "withdraw", "return", "printbill", "payfines"};
-
-    /**
-     *
-     * @return currently set admin password
-     */
-    public String getPassword() {
-        return password;
+    private JComboBox studentSearchKeys;
+    private ButtonGroup searchType;
+    private JRadioButton searchBook;
+    private JRadioButton searchStudent;
+    private JPanel entrySubPanel;
+    
+    public Admin(Window window) {
+        super(window);
+    }
+    
+    public void configureAdminMenu(){
+        this.setLayout(null);
+        
+        createEntryPanel();
+        createSearchEntry();
+        createBookSearchKeys();
+        createSearchButton();
+        studentSearchKeys = new JComboBox(new Student("").getKeys());
+        studentSearchKeys.setFont(getDefaultFont());
+        searchBook = new JRadioButton("Book");
+        searchBook.setFont(getDefaultFont());
+        searchBook.setBounds(450, 80, 850, 50);
+        searchBook.addActionListener((ActionListener) new AdminListener(this));
+        searchStudent = new JRadioButton("Student");
+        searchStudent.setFont(getDefaultFont());
+        searchStudent.setBounds(600, 80, 850, 50);
+        searchStudent.addActionListener((ActionListener) new AdminListener(this));
+        searchType = new ButtonGroup();
+        searchType.add(searchBook); searchType.add(searchStudent);
+        entrySubPanel = new JPanel();
+        entrySubPanel.setLayout(new BoxLayout(entrySubPanel, BoxLayout.X_AXIS));
+        entrySubPanel.setBounds(450, 80, 200, 50);
+        entrySubPanel.add(searchBook);
+        entrySubPanel.add(searchStudent);
+        
+        getEntryPanel().add(getSearchEntry()); 
+        getEntryPanel().add(getBookSearchKeys());
+        getEntryPanel().add(studentSearchKeys); 
+        getEntryPanel().add(getSearchButton());
+        
+        
+        add(getEntryPanel());
+        add(entrySubPanel);
+    }
+    
+    public void loadUserMenu(){
+        getWindow().addUser();
     }
 
-    /**
-     *
-     * @param password: set admin password
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    public JComboBox getStudentSearchKeys() {
+        return studentSearchKeys;
     }
 
+    public void setStudentSearchKeys(JComboBox studentSearchKeys) {
+        this.studentSearchKeys = studentSearchKeys;
+    }
+
+    public ButtonGroup getSearchType() {
+        return searchType;
+    }
+
+    public void setSearchType(ButtonGroup searchType) {
+        this.searchType = searchType;
+    }
+
+    public JRadioButton getSearchBook() {
+        return searchBook;
+    }
+
+    public void setSearchBook(JRadioButton searchBook) {
+        this.searchBook = searchBook;
+    }
+
+    public JRadioButton getSearchStudent() {
+        return searchStudent;
+    }
+
+    public void setSearchStudent(JRadioButton searchStudent) {
+        this.searchStudent = searchStudent;
+    }
+
+    public JPanel getEntrySubPanel() {
+        return entrySubPanel;
+    }
+
+    public void setEntrySubPanel(JPanel entrySubPanel) {
+        this.entrySubPanel = entrySubPanel;
+    }
+
+    
+    // set up admin login, create protected text field for admin password
+    
+    
     /**
-     * Guide User Inputs
-     */
     public void getInput() {
 
         try {
@@ -122,7 +197,7 @@ public class Admin{
      * @throws InvalidType
      * @throws FileNotFoundException
      * @throws InvalidAction
-     */
+     
     public void search(String category) throws InvalidType, FileNotFoundException, InvalidAction, IOException {
         Scanner in = new Scanner(System.in);
         String showKeys[];
@@ -201,7 +276,7 @@ public class Admin{
      * @throws InvalidType
      * @throws FileNotFoundException
      * @throws FileOverwrite
-     */
+     
     public void addEntry(String category) throws InvalidType, FileNotFoundException, FileOverwrite, IOException {
         Scanner in = new Scanner(System.in);
 
@@ -246,7 +321,7 @@ public class Admin{
      * @throws InvalidType
      * @throws FileNotFoundException
      * @throws FileOverwrite
-     */
+     
     public void modEntry() throws InvalidType, InvalidAction, FileOverwrite, IOException {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter ID of book to modify: ");
@@ -340,7 +415,7 @@ public class Admin{
      * @throws FileNotFoundException
      * @throws InvalidAction
      * @throws FileOverwrite
-     */
+     
     public void withdrawBook() throws InvalidType, FileNotFoundException, InvalidAction, FileOverwrite, IOException {
         
         Scanner in = new Scanner(System.in);
@@ -380,7 +455,7 @@ public class Admin{
      * @throws FileNotFoundException
      * @throws InvalidAction
      * @throws FileOverwrite
-     */
+     
     public void returnBook() throws FileNotFoundException, InvalidAction, FileOverwrite, IOException {
         Scanner in = new Scanner(System.in);
         //Entering student id to create student object
@@ -436,7 +511,7 @@ public class Admin{
      * @throws InputMismatchException
      * @throws InvalidAction
      * @throws FileOverwrite
-     */
+     
     public void payFines() throws FileNotFoundException, InputMismatchException, InvalidAction, FileOverwrite, IOException {
         Scanner in = new Scanner(System.in);
         System.out.println("Pay fines for which student? (Enter ID number)");
@@ -456,5 +531,6 @@ public class Admin{
         }
 
     }
+*/
 
 }

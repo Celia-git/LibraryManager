@@ -5,6 +5,7 @@
  */
 package librarysystem;
 
+import java.awt.Component;
 import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -19,9 +20,10 @@ public class Window extends JFrame{
     private Font labelFont = new Font("Consolas", Font.PLAIN, 12);
     private Font defaultFont = new Font("Helvetica", Font.PLAIN, 14);
     private Font labelTitleFont = new Font("Consolas", Font.BOLD, 12);
+    private User user;
+    private Admin admin;
     
-    public void Window(){
-    }
+    public void Window(){}
     
     public void configureWindow(){
         setTitle("Library System");
@@ -29,11 +31,27 @@ public class Window extends JFrame{
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
-        User user = new User(this);
+        this.user = new User(this);
+        this.admin = new Admin(this);
         user.configureUserMenu();
-        add(user);
-    
+        admin.configureAdminMenu();
+        addUser();
     }
+    
+    public void addUser(){
+        if (this.admin != null){
+            remove(this.admin);
+        }
+        add(user);
+    }
+    
+    public void addAdmin(){
+        if (this.user != null){
+            remove(this.user);
+        }
+        add(admin);
+    }
+    
     public void refresh(){
         pack();
         setSize(800, 900);
