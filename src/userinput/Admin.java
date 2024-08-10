@@ -47,20 +47,25 @@ public class Admin extends User{
     public void configureAdminMenu(){
         this.setLayout(null);
         
+        ActionListener listener = (ActionListener) new AdminListener(this);
+        
         createEntryPanel();
         createSearchEntry();
         createBookSearchKeys();
         createSearchButton();
+        getSearchButton().addActionListener(listener);
         studentSearchKeys = new JComboBox(new Student("").getKeys());
         studentSearchKeys.setFont(getDefaultFont());
+        studentSearchKeys.setEnabled(false);
         searchBook = new JRadioButton("Book");
         searchBook.setFont(getDefaultFont());
         searchBook.setBounds(450, 80, 850, 50);
-        searchBook.addActionListener((ActionListener) new AdminListener(this));
+        searchBook.setSelected(true);
+        searchBook.addActionListener(listener);
         searchStudent = new JRadioButton("Student");
         searchStudent.setFont(getDefaultFont());
         searchStudent.setBounds(600, 80, 850, 50);
-        searchStudent.addActionListener((ActionListener) new AdminListener(this));
+        searchStudent.addActionListener(listener);
         searchType = new ButtonGroup();
         searchType.add(searchBook); searchType.add(searchStudent);
         entrySubPanel = new JPanel();
@@ -74,8 +79,17 @@ public class Admin extends User{
         getEntryPanel().add(studentSearchKeys); 
         getEntryPanel().add(getSearchButton());
         
+        createViewPanel();
+        createResultsLabel();
+        createViewButton();
+        createViewOutputPanel();
         
-        add(getEntryPanel());
+        getViewButton().addActionListener(listener);
+        getSearchButton().addActionListener(listener);
+        
+        getViewPanel().add(getResultsLabel()); getViewPanel().add(getViewButton()); getViewPanel().add(getViewOutput());
+        
+        add(getEntryPanel()); add (getViewPanel());
         add(entrySubPanel);
     }
     

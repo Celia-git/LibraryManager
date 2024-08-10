@@ -59,6 +59,8 @@ public class User extends JPanel {
     public void configureUserMenu(){
         this.setLayout(null);
         
+        ActionListener listener = (ActionListener) new UserListener(this);
+        
         createEntryPanel();
         createSearchEntry();
         createSearchButton();
@@ -82,9 +84,9 @@ public class User extends JPanel {
         add(entryPanel); add(viewPanel); add(adminLoginPanel);
         
         // Add functionality to search button, view button, and admin login button
-        searchButton.addActionListener((ActionListener) new UserListener(this));
-        viewButton.addActionListener((ActionListener) new UserListener(this));
-        adminLoginButton.addActionListener((ActionListener) new UserListener(this));
+        searchButton.addActionListener(listener);
+        viewButton.addActionListener(listener);
+        adminLoginButton.addActionListener(listener);
         
         
     }
